@@ -86,3 +86,8 @@ npx prisma db push
 
 In /src/server/auth
 Add ENV variables to .env
+
+# Extend TRPC router
+
+New router in /src/server/api/routers
+Adapted /src/server/api/root

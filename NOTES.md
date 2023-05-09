@@ -99,3 +99,7 @@ Run and check terminal log after "logging in"
 # Install react-hot-toast
 `npm i react-hot-toast`
 Create Todos, Todo, CreateTodo component
+
+# Expand router with functionality
+
+Extended all and added create, delete and toggle

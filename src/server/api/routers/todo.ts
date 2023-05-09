@@ -1,6 +1,7 @@
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { todoInput } from "../../../types";
 import { z } from "zod";
+
+import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { todoInput } from "../../../types";
 
 export const todoRouter = createTRPCRouter({
   all: protectedProcedure.query(async ({ ctx }) => {
@@ -9,50 +10,43 @@ export const todoRouter = createTRPCRouter({
         userId: ctx.session.user.id,
       },
     });
-    console.log(todos.map(({ id, text, done }) => ({ id, text, done })));
-    return [
-      {
-        id: "fake",
-        text: "fake text",
-        done: false,
-      },
-      {
-        id: "fake 2",
-        text: "fake text 2",
-        done: true,
-      },
-    ];
+    return todos.map(({ id, text, done }) => ({ id, text, done }));
   }),
-  create: protectedProcedure
-    .input(todoInput)
-    .mutation(async ({ ctx, input }) => {
-      return ctx.prisma.todo.create({
-        data: {
-          text: input,
-          user: {
-            connect: {
-              id: ctx.session.user.id,
-            },
+  create: protectedProcedure.input(todoInput).mutation(({ ctx, input }) => {
+    // throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+    return ctx.prisma.todo.create({
+      data: {
+        text: input,
+        user: {
+          connect: {
+            id: ctx.session.user.id,
           },
         },
-      });
-    }),
-  delete: protectedProcedure
-    .input(z.string())
-    .mutation(async ({ ctx, input }) => {
-      return ctx.prisma.todo.delete({
-        where: { id: input },
-      });
-    }),
+      },
+    });
+  }),
+  delete: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
+    return ctx.prisma.todo.delete({
+      where: {
+        id: input,
+      },
+    });
+  }),
   toggle: protectedProcedure
-    .input(z.object({ id: z.string(), done: z.boolean() }))
-    .mutation(async ({ ctx, input }) => {
+    .input(
+      z.object({
+        id: z.string(),
+        done: z.boolean(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      const { id, done } = input;
       return ctx.prisma.todo.update({
         where: {
-          id: input.id,
+          id,
         },
         data: {
-          done: input.done,
+          done,
         },
       });
     }),

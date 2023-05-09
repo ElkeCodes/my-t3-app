@@ -91,3 +91,7 @@ Add ENV variables to .env
 
 New router in /src/server/api/routers
 Adapted /src/server/api/root
+
+# Install nodemailer
+`npm i nodemailer`
+Run and check terminal log after "logging in"

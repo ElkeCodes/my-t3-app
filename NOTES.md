@@ -81,3 +81,8 @@ Added Prisma extension
 
 Added Todo (should autocomplete)
 npx prisma db push
+
+# Add EmailProvider
+
+In /src/server/auth
+Add ENV variables to .env

@@ -95,3 +95,7 @@ Adapted /src/server/api/root
 # Install nodemailer
 `npm i nodemailer`
 Run and check terminal log after "logging in"
+
+# Install react-hot-toast
+`npm i react-hot-toast`
+Create Todos, Todo, CreateTodo component
